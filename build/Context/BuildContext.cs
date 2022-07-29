@@ -11,7 +11,7 @@ namespace Build.Context
         {
             SolutionPath = context.Arguments.GetArgument("solution_path");
             HelmRepositoryName = context.Arguments.GetArgument("helm_repository_name");
-            Version = context.Arguments.GetArgument("app_version");
+            Version = context.Arguments.GetArgument("chart_version");
             HelmRepositoryAddress = context.Arguments.GetArgument("helm_repository_address");
         }
 
