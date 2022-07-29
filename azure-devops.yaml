@@ -1,0 +1,30 @@
+name: $(version)-$(Build.SourceBranchName).$(Build.BuildId)
+
+pool:
+  name: Minikube
+
+resources:
+  repositories:
+  - repository: templates
+    type: git
+    name: templates
+
+variables:
+- group: devops
+- name: version
+  value: 0.3.0
+
+jobs:
+  - job: Publish Helm Chart
+    steps:
+      - template: configure-version.yaml@templates
+      - template: run-cake.yaml@templates
+        parameters:
+          variables: "--target=Publish Helm Chart"
+          library: HelmCharts
+      - task: PublishBuildArtifacts@1
+        inputs:
+          PathtoPublish: './artifacts/helm/'
+          ArtifactName: 'helm'
+          publishLocation: 'Container'
+

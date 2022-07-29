@@ -1,0 +1,20 @@
+apiVersion: networking.istio.io/v1beta1
+kind: VirtualService
+metadata:
+  name: {{ include "service.fullname" . }}
+  namespace: {{ include "service.namespace" . }}
+spec:
+  hosts:
+  - "{{ include "service.fullname" . }}.k8.local"
+  gateways:
+  - mesh
+{{- if .Values.ingress.enabled }}
+  - "{{ include "service.namespace" . }}/{{ include "service.namespace" . }}-gateway"
+{{- end }}
+  http:
+  - match:
+    route:
+    - destination:
+        host: "{{ include "service.fullname" . }}"
+        port:
+          number: 80
