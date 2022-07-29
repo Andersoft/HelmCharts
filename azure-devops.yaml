@@ -20,7 +20,7 @@ jobs:
       - template: configure-version.yaml@templates
       - template: run-cake.yaml@templates
         parameters:
-          variables: "--target=Publish Helm Chart"
+          variables: "--target=Publish Helm Chart, --app_version=$(version)"
           library: HelmCharts
       - task: PublishBuildArtifacts@1
         inputs:
