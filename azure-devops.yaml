@@ -27,14 +27,11 @@ jobs:
         displayName: Configure Version
       - powershell: |
           echo "$(System.AccessToken)" | az devops login --organization $(System.CollectionUri)
-          $projectVariables = az pipelines variable-group list --organization $(System.CollectionUri)--project $(System.TeamProject)) --group ${{ parameters.library }} | ConvertFrom-Json
-          $options = "${{ parameters.variables }}" -split ","
+          $projectVariables = az pipelines variable-group list --organization $(System.CollectionUri)--project $(System.TeamProject)) --group HelmCharts | ConvertFrom-Json
+          $options = "--target=Publish Helm Chart, --chart_version=$(Build.BuildNumber)" -split ","
           $projectVariables.variables.PSObject.Properties | where {$_.Value.value -ne $null} | forEach { $options+= "--$($_.Name)=$($_.Value.value)"  }
           .\build.ps1 @options
-        displayName: 'Run Cake Script'
-        parameters:
-          variables: "--target=Publish Helm Chart, --chart_version=$(Build.BuildNumber)"
-          library: HelmCharts
+        displayName: 'Run Cake Script'        
       - task: PublishBuildArtifacts@1
         inputs:
           PathtoPublish: './artifacts/helm/'
