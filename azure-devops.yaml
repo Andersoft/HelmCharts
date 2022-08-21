@@ -17,13 +17,14 @@ jobs:
   - job: Build
     steps:
       - powershell: |
-          if("$(Build.SourceBranchName)" -eq "master" -Or "$(Build.SourceBranchName)" -eq "master") { 
+          if("$(Build.SourceBranchName)" -eq "master" -Or "$(Build.SourceBranchName)" -eq "main") { 
             Write-Host "##vso[task.setvariable variable=version]$(version)" 
             Write-Host "##vso[build.updatebuildnumber]$(version)"
           } else {
             Write-Host "##vso[task.setvariable variable=version]$(version)-$(Build.SourceBranchName).$(Build.BuildId)" 
             Write-Host "##vso[build.updatebuildnumber]$(version)-$(Build.SourceBranchName).$(Build.BuildId)"
           }
+        displayName: Configure Version
       - template: run-cake.yaml@templates
         parameters:
           variables: "--target=Publish Helm Chart, --chart_version=$(Build.BuildNumber)"
