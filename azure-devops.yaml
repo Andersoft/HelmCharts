@@ -25,7 +25,13 @@ jobs:
             Write-Host "##vso[build.updatebuildnumber]$(version)-$(Build.SourceBranchName).$(Build.BuildId)"
           }
         displayName: Configure Version
-      - template: run-cake.yaml@templates
+        - powershell: |
+            echo "$(System.AccessToken)" | az devops login --organization $(System.CollectionUri)
+            $projectVariables = az pipelines variable-group list --organization $(System.CollectionUri)--project $(System.TeamProject)) --group ${{ parameters.library }} | ConvertFrom-Json
+            $options = "${{ parameters.variables }}" -split ","
+            $projectVariables.variables.PSObject.Properties | where {$_.Value.value -ne $null} | forEach { $options+= "--$($_.Name)=$($_.Value.value)"  }
+            .\build.ps1 @options
+          displayName: 'Run Cake Script'
         parameters:
           variables: "--target=Publish Helm Chart, --chart_version=$(Build.BuildNumber)"
           library: HelmCharts
