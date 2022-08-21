@@ -5,7 +5,7 @@ metadata:
   namespace: {{ include "service.namespace" . }}
 spec:
   hosts:
-  - "{{ include "service.fullname" . }}.k8.local"
+  - "{{ .Values.hostname }}"
   gateways:
   - mesh
 {{- if .Values.ingress.enabled }}
