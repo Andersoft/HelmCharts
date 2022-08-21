@@ -1,7 +1,7 @@
 name: $(version)-$(Build.SourceBranchName).$(Build.BuildId)
 
 pool:
-  name: Minikube
+  name: Home PC
 
 resources:
   repositories:
@@ -11,15 +11,22 @@ resources:
 
 variables:
 - name: version
-  value: 0.3.0
+  value: 0.4.0
 
 jobs:
   - job: Build
     steps:
-      - template: configure-version.yaml@templates
+      - powershell: |
+          if("$(Build.SourceBranchName)" -eq "master" -Or "$(Build.SourceBranchName)" -eq "master") { 
+            Write-Host "##vso[task.setvariable variable=version]$(version)" 
+            Write-Host "##vso[build.updatebuildnumber]$(version)"
+          } else {
+            Write-Host "##vso[task.setvariable variable=version]$(version)-$(Build.SourceBranchName).$(Build.BuildId)" 
+            Write-Host "##vso[build.updatebuildnumber]$(version)-$(Build.SourceBranchName).$(Build.BuildId)"
+          }
       - template: run-cake.yaml@templates
         parameters:
-          variables: "--target=Publish Helm Chart, --chart_version=$(version)"
+          variables: "--target=Publish Helm Chart, --chart_version=$(Build.BuildNumber)"
           library: HelmCharts
       - task: PublishBuildArtifacts@1
         inputs:
