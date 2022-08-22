@@ -13,15 +13,15 @@ public static class HelmContextExtensions
   const string BinaryName = "helm";
   const string ArgumentSeparator = " ";
 
-  public static async Task<bool> TryAddHelmRepositoryAsync(
+  public static async Task<bool> TryAuthenticateHelmRepository(
     this ICakeContext context,
     HelmRepositoryOptions options)
   {
-
-    context.Log.Information($"helm repo add {options.RepositoryName} {options.RepositoryAddress}");
+    var args = new[] { "login", options.RepositoryAddress, $"--username {options.RepositoryUsername}", $"--password {options.RepositoryPassword}" };
+    context.Log.Information($"helm {string.Join(" ", args)}");
 
     var result = await Cli.Wrap(BinaryName)
-      .WithArguments(new[] { "repo add", options.RepositoryName, options.RepositoryAddress }, false)
+      .WithArguments(args, false)
       .WithStandardOutputPipe(PipeTarget.ToDelegate(context.Log.Information))
       .WithStandardErrorPipe(PipeTarget.ToDelegate(context.Log.Error))
       .ExecuteBufferedAsync();
@@ -37,10 +37,11 @@ public static class HelmContextExtensions
 
     foreach (var package in packages)
     {
-      context.Log.Information($"helm cm-push {package} {options.RepositoryName}");
+      var args = new string[] {"push", package, $"oci://{options.RepositoryAddress}/helm"};
+      context.Log.Information($"helm {string.Join(" ", args)}");
 
       var result = await Cli.Wrap(BinaryName)
-        .WithArguments(new[] { "cm-push", package, options.RepositoryName }, false)
+        .WithArguments(args, false)
         .WithStandardOutputPipe(PipeTarget.ToDelegate(context.Log.Information))
         .WithStandardErrorPipe(PipeTarget.ToDelegate(context.Log.Error))
         .ExecuteBufferedAsync();

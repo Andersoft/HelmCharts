@@ -10,14 +10,16 @@ namespace Build.Context
         : base(context)
         {
             SolutionPath = context.Arguments.GetArgument("solution_path");
-            HelmRepositoryName = context.Arguments.GetArgument("helm_repository_name");
+            HelmRepositoryUsername = context.Arguments.GetArgument("helm_repository_username");
+            HelmRepositoryPassword = context.Arguments.GetArgument("helm_repository_password");
             Version = context.Arguments.GetArgument("chart_version");
             HelmRepositoryAddress = context.Arguments.GetArgument("helm_repository_address");
         }
 
         public string SolutionPath { get; internal set; }
 
-        public string HelmRepositoryName { get; set; }
+        public string HelmRepositoryUsername { get; set; }
+        public string HelmRepositoryPassword { get; set; }
 
         public string Version { get; set; }
 

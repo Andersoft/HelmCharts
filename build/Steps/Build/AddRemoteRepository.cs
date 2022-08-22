@@ -15,10 +15,11 @@ public sealed class AddRemoteRepository : AsyncFrostingTask<BuildContext>
     var options = new HelmRepositoryOptions()
     {
       RepositoryAddress= context.HelmRepositoryAddress,
-      RepositoryName = context.HelmRepositoryName
+      RepositoryUsername = context.HelmRepositoryUsername,
+      RepositoryPassword = context.HelmRepositoryPassword
     };
 
-    if (await context.TryAddHelmRepositoryAsync(options) is false)
+    if (await context.TryAuthenticateHelmRepository(options) is false)
     {
       throw new Exception("Failed to add helm repository");
     }
