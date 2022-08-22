@@ -17,7 +17,7 @@ public static class HelmContextExtensions
     this ICakeContext context,
     HelmRepositoryOptions options)
   {
-    var args = new[] { "login", options.RepositoryAddress, $"--username {options.RepositoryUsername}", $"--password {options.RepositoryPassword}" };
+    var args = new[] { "registry", "login", options.RepositoryAddress, $"--username {options.RepositoryUsername}", $"--password {options.RepositoryPassword}" };
     context.Log.Information($"helm {string.Join(" ", args)}");
 
     var result = await Cli.Wrap(BinaryName)
