@@ -10,7 +10,7 @@ resources:
     name: templates
 
 variables:
--group: HelmCharts
+- group: HelmCharts
 - name: version
   value: 0.4.0
 
