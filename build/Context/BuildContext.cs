@@ -1,4 +1,6 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 using Cake.Core;
 using Cake.Frosting;
 
@@ -10,8 +12,8 @@ namespace Build.Context
         : base(context)
         {
             SolutionPath = context.Arguments.GetArgument("solution_path");
-            HelmRepositoryUsername = context.Arguments.GetArgument("helm_repository_username");
-            HelmRepositoryPassword = context.Arguments.GetArgument("helm_repository_password");
+            HelmRepositoryUsername = context.Arguments.GetArgument("helm_username");
+            HelmRepositoryPassword = context.Arguments.GetArgument("helm_password");
             Version = context.Arguments.GetArgument("chart_version");
             HelmRepositoryAddress = context.Arguments.GetArgument("helm_repository_address");
         }
