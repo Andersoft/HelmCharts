@@ -7,7 +7,6 @@ using Cake.Frosting;
 namespace Build.Steps.Build;
 
 [TaskName("Add Helm repository")]
-[IsDependentOn(typeof(CleanSolution))]
 public sealed class AddRemoteRepository : AsyncFrostingTask<BuildContext>
 {
   public override async Task RunAsync(BuildContext context)
