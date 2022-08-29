@@ -33,6 +33,7 @@ jobs:
           $projectVariables = az pipelines variable-group list --organization $(System.CollectionUri) --project $(System.TeamProject) --group $(Project) | ConvertFrom-Json
           $options = "--target=Publish Helm Chart, --chart_version=$(Build.BuildNumber), --helm_password=$(helm_password)" -split ","
           $projectVariables.variables.PSObject.Properties | where {$_.Value.value -ne $null} | forEach { $options+= "--$($_.Name)=$($_.Value.value)"  }
+          $options | fl
           .\build.ps1 @options
         displayName: 'Run Cake Script'        
       - task: PublishBuildArtifacts@1
