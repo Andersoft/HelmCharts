@@ -5,9 +5,13 @@ image:
   pullPolicy: Always
   tag: "latest"
 
-imagePullSecrets: []
+imagePullSecrets: imagePullSecrets: [{ name: magnoxium-repository }]
 nameOverride: ""
 namespace: ""
+
+hostname: ""
+
+healthProbe: "/"
 
 serviceAccount:
   create: true

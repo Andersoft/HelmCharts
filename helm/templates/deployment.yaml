@@ -39,11 +39,11 @@ spec:
               protocol: TCP
           livenessProbe:
             httpGet:
-              path: /
+              path: {{ .Values.healthProbe }} 
               port: http
           readinessProbe:
             httpGet:
-              path: /
+              path: {{ .Values.healthProbe }}
               port: http
           volumeMounts:
             - name: {{ include "service.fullname" . }}-secrets
