@@ -1,14 +1,20 @@
-﻿using Build.Context;
+﻿using System;
+using System.Threading.Tasks;
+using Build.Context;
+using Build.Extensions.Git;
 using Cake.Frosting;
 using Cake.Git;
 
 namespace Build.Steps.Build;
 
 [TaskName("Clean Solution")]
-public sealed class CleanSolution : FrostingTask<BuildContext>
+public sealed class CleanSolution : AsyncFrostingTask<BuildContext>
 {
-  public override void Run(BuildContext context)
+  public override async Task RunAsync(BuildContext context)
   {
-    context.GitClean(context.SolutionPath);
+    if(await context.TryGitClean() is false) 
+    {
+      throw new Exception("Failed to clean solution");
+    };
   }
 }
