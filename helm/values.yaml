@@ -12,7 +12,7 @@ namespace: ""
 
 hostname: ""
 
-healthProbe: "/"
+healthProbe: "/health"
 
 serviceAccount:
   create: true
