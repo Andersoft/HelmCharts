@@ -15,7 +15,7 @@ variables:
 - name: Project
   value: HelmCharts
 - name: version
-  value: 0.7.0
+  value: 0.7.1
 
 jobs:
   - job: Build

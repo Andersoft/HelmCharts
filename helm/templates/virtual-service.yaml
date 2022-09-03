@@ -9,7 +9,7 @@ spec:
   gateways:
   - mesh
 {{- if .Values.ingress.enabled }}
-  - "{{ include "service.namespace" . }}/{{ include "service.namespace" . }}-gateway"
+  - "default/application-gateway"
 {{- end }}
   http:
   - match:
